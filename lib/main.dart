@@ -63,11 +63,7 @@ class _HomePageState extends State<HomePage>
   @override
   void reassemble() {
     super.reassemble();
-    _controller
-      ..stop()
-      ..reset();
-    currentPeriod = 0;
-    Future.delayed(_waitingDuration).then((_) => _callAnimation());
+    _restart();
   }
 
   @override
@@ -90,6 +86,14 @@ class _HomePageState extends State<HomePage>
     await _callAnimation();
   }
 
+  void _restart() {
+    _controller
+      ..stop()
+      ..reset();
+    currentPeriod = 0;
+    Future.delayed(_waitingDuration).then((_) => _callAnimation());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,10 +105,13 @@ class _HomePageState extends State<HomePage>
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 100),
-              child: Image.asset(
-                'assets/apple-logo.png',
-                color: CupertinoColors.white,
-                width: 100,
+              child: GestureDetector(
+                onTap: _restart,
+                child: Image.asset(
+                  'assets/apple-logo.png',
+                  color: CupertinoColors.white,
+                  width: 100,
+                ),
               ),
             ),
             Expanded(
